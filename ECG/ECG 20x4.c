@@ -18,11 +18,14 @@ sbit LCD_D7_Direction at TRISC7_bit;
 //Row Definitions
 #define loadRow 2
 #define byRow 4
+#define eRow 2
+#define pRow 3
 
 //Delay Definitions
 #define HDelay 1
 #define LDelay 1
 #define ByDelay 1
+#define EPDelay 1
 #define RDelay 500
 
 //Loop Definitions
@@ -169,6 +172,29 @@ void ERotate(int r)
   r=checkR(r);
 }
 
+//Prints ECG: PPG:
+void epDisp()
+{
+  Lcd_Cmd(_LCD_CURSOR_OFF);
+  LCD_Out(eRow,1,"E");
+  Delay_ms(EPDelay);
+  LCD_Out(eRow,2,"C");
+  Delay_ms(EPDelay);
+  LCD_Out(eRow,3,"G");
+  Delay_ms(EPDelay);
+  LCD_Out(eRow,4,":");
+  Delay_ms(EPDelay);
+  LCD_Out(pRow,1,"P");
+  Delay_ms(EPDelay);
+  LCD_Out(pRow,2,"P");
+  Delay_ms(EPDelay);
+  LCD_Out(pRow,3,"G");
+  Delay_ms(EPDelay);
+  LCD_Out(pRow,4,":");
+  Delay_ms(EPDelay);
+}
+
+
 
 
 
@@ -183,6 +209,7 @@ void main() {
   LDisp();
   Lcd_Cmd(_LCD_CLEAR);
   byDisp();
+  epDisp();
   
   while(1)
   {

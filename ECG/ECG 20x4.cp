@@ -12,7 +12,7 @@ sbit LCD_D4_Direction at TRISC4_bit;
 sbit LCD_D5_Direction at TRISC5_bit;
 sbit LCD_D6_Direction at TRISC6_bit;
 sbit LCD_D7_Direction at TRISC7_bit;
-#line 34 "F:/Github/PiScope-LCD/ECG/ECG 20x4.c"
+#line 37 "F:/Github/PiScope-LCD/ECG/ECG 20x4.c"
 void HDisp()
 {
  LCD_Out(1,1,"E");
@@ -152,6 +152,29 @@ void ERotate(int r)
 }
 
 
+void epDisp()
+{
+ Lcd_Cmd(_LCD_CURSOR_OFF);
+ LCD_Out( 2 ,1,"E");
+ Delay_ms( 1 );
+ LCD_Out( 2 ,2,"C");
+ Delay_ms( 1 );
+ LCD_Out( 2 ,3,"G");
+ Delay_ms( 1 );
+ LCD_Out( 2 ,4,":");
+ Delay_ms( 1 );
+ LCD_Out( 3 ,1,"P");
+ Delay_ms( 1 );
+ LCD_Out( 3 ,2,"P");
+ Delay_ms( 1 );
+ LCD_Out( 3 ,3,"G");
+ Delay_ms( 1 );
+ LCD_Out( 3 ,4,":");
+ Delay_ms( 1 );
+}
+
+
+
 
 
 
@@ -165,6 +188,7 @@ void main() {
  LDisp();
  Lcd_Cmd(_LCD_CLEAR);
  byDisp();
+ epDisp();
 
  while(1)
  {

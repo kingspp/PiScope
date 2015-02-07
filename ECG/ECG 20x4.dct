@@ -394,6 +394,7 @@ eepgd
 eepgd_bit
 eeprom_read
 eeprom_write
+epdisp
 equals_double
 erotate
 exp
