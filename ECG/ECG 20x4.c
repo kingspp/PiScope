@@ -11,6 +11,16 @@ sbit LCD_D4_Direction at TRISC4_bit;
 sbit LCD_D5_Direction at TRISC5_bit;
 sbit LCD_D6_Direction at TRISC6_bit;
 sbit LCD_D7_Direction at TRISC7_bit;
+
+//Definitions
+#define outPut 0x00
+#define inPut  0xff
+
+// Main Function
 void main() {
+
+  TRISA = inPut;  // Make Port A as Input
+  ADCON1 = 0x80;  // Pic ADC Configuration
+  
 
 }
