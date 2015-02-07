@@ -217,6 +217,7 @@ boot16_delay_5ms
 brgh
 brgh_bit
 button
+bydisp
 byte2double
 bytetohex
 bytetostr
@@ -543,6 +544,7 @@ lcd_out_cp
 lcd_rs
 lcd_rs_direction
 ldexp
+ldisp
 ldiv
 log
 log10

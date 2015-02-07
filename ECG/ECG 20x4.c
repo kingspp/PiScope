@@ -15,8 +15,18 @@ sbit LCD_D7_Direction at TRISC7_bit;
 #define outPut 0x00
 #define inPut  0xff
 
+//Row Definitions
+#define loadRow 2
+#define byRow 4
+
 //Delay Definitions
 #define HDelay 1
+#define LDelay 1
+#define ByDelay 1
+
+//Loop Definitions
+#define LRep 3
+
 
 //Functions
 // Prints Echocardiogram
@@ -52,6 +62,66 @@ void HDisp()
   Delay_ms(HDelay);
 }
 
+//Prints By kingspp
+void byDisp()
+{
+//  Lcd_Cmd(_LCD_CLEAR);
+  LCD_Out(byRow,9,"-");
+  Delay_ms(ByDelay);
+  LCD_Out(byRow,10,"B");
+  Delay_ms(ByDelay);
+  LCD_Out(byRow,11,"y");
+  Delay_ms(ByDelay);
+  LCD_Out(byRow,12," ");
+  Delay_ms(ByDelay);
+  LCD_Out(byRow,13,"K");
+  Delay_ms(ByDelay);
+  LCD_Out(byRow,14,"i");
+  Delay_ms(ByDelay);
+  LCD_Out(byRow,15,"n");
+  Delay_ms(ByDelay);
+  LCD_Out(byRow,16,"g");
+  Delay_ms(ByDelay);
+  LCD_Out(byRow,17,"s");
+  Delay_ms(ByDelay);
+  LCD_Out(byRow,18,"p");
+  Delay_ms(ByDelay);
+  LCD_Out(byRow,19,"p");
+  Delay_ms(ByDelay);
+}
+
+//Prints Loading . . .
+void LDisp()
+{
+  int i,j;
+  LCD_Out(loadRow,1,"L");
+  Delay_ms(LDelay);
+  LCD_Out(loadRow,2,"o");
+  Delay_ms(LDelay);
+  LCD_Out(loadRow,3,"a");
+  Delay_ms(LDelay);
+  LCD_Out(loadRow,4,"d");
+  Delay_ms(LDelay);
+  LCD_Out(loadRow,5,"i");
+  Delay_ms(LDelay);
+  LCD_Out(loadRow,6,"n");
+  Delay_ms(LDelay);
+  LCD_Out(loadRow,7,"g");
+  Delay_ms(LDelay);
+  for(i=0;i<3;i++)
+  {
+     for(j=8;j<11;j++)
+     {
+        Lcd_Cmd(_LCD_CURSOR_OFF);
+        LCD_Out(2,j,".");
+        Delay_ms(750);
+        LCD_Out(2,j," ");
+     }
+  }
+}
+
+
+
 // Main Function
 void main() {
 
@@ -59,6 +129,9 @@ void main() {
   ADCON1 = 0x80;  // Pic ADC Configuration
   Lcd_Init();// Initialize LCD
   HDisp();
+  byDisp();
+  LDisp();
+
   
   
   
