@@ -12,7 +12,7 @@ sbit LCD_D4_Direction at TRISC4_bit;
 sbit LCD_D5_Direction at TRISC5_bit;
 sbit LCD_D6_Direction at TRISC6_bit;
 sbit LCD_D7_Direction at TRISC7_bit;
-#line 33 "F:/Github/PiScope-LCD/ECG/ECG 20x4.c"
+#line 34 "F:/Github/PiScope-LCD/ECG/ECG 20x4.c"
 void HDisp()
 {
  LCD_Out(1,1,"E");
@@ -42,6 +42,34 @@ void HDisp()
  LCD_Out(1,13,"a");
  Delay_ms( 1 );
  LCD_Out(1,14,"m");
+ Delay_ms( 1 );
+}
+
+
+void byDisp()
+{
+
+ LCD_Out( 4 ,9,"-");
+ Delay_ms( 1 );
+ LCD_Out( 4 ,10,"B");
+ Delay_ms( 1 );
+ LCD_Out( 4 ,11,"y");
+ Delay_ms( 1 );
+ LCD_Out( 4 ,12," ");
+ Delay_ms( 1 );
+ LCD_Out( 4 ,13,"K");
+ Delay_ms( 1 );
+ LCD_Out( 4 ,14,"i");
+ Delay_ms( 1 );
+ LCD_Out( 4 ,15,"n");
+ Delay_ms( 1 );
+ LCD_Out( 4 ,16,"g");
+ Delay_ms( 1 );
+ LCD_Out( 4 ,17,"s");
+ Delay_ms( 1 );
+ LCD_Out( 4 ,18,"p");
+ Delay_ms( 1 );
+ LCD_Out( 4 ,19,"p");
  Delay_ms( 1 );
 }
 
@@ -76,42 +104,77 @@ void LDisp()
 }
 
 
-void byDisp()
+int checkR(int x)
 {
-
- LCD_Out( 4 ,9,"-");
- Delay_ms( 1 );
- LCD_Out( 4 ,10,"B");
- Delay_ms( 1 );
- LCD_Out( 4 ,11,"y");
- Delay_ms( 1 );
- LCD_Out( 4 ,12," ");
- Delay_ms( 1 );
- LCD_Out( 4 ,13,"K");
- Delay_ms( 1 );
- LCD_Out( 4 ,14,"i");
- Delay_ms( 1 );
- LCD_Out( 4 ,15,"n");
- Delay_ms( 1 );
- LCD_Out( 4 ,16,"g");
- Delay_ms( 1 );
- LCD_Out( 4 ,17,"s");
- Delay_ms( 1 );
- LCD_Out( 4 ,18,"p");
- Delay_ms( 1 );
- LCD_Out( 4 ,19,"p");
- Delay_ms( 1 );
+if(x>20)
+x=0;
+return x;
 }
 
 
-void main() {
+void ERotate(int r)
+{
+ int j;
+ Lcd_Cmd(_LCD_CURSOR_OFF);
+ for(j=1;j<21;j++)
+ {
+ LCD_Out(1,j," ");
+ }
 
+ LCD_Out(1,r++,"E");
+ r=checkR(r);
+ LCD_Out(1,r++,"c");
+ r=checkR(r);
+ LCD_Out(1,r++,"h");
+ r=checkR(r);
+ LCD_Out(1,r++,"o");
+ r=checkR(r);
+ LCD_Out(1,r++,"c");
+ r=checkR(r);
+ LCD_Out(1,r++,"a");
+ r=checkR(r);
+ LCD_Out(1,r++,"r");
+ r=checkR(r);
+ LCD_Out(1,r++,"d");
+ r=checkR(r);
+ LCD_Out(1,r++,"i");
+ r=checkR(r);
+ LCD_Out(1,r++,"o");
+ r=checkR(r);
+ LCD_Out(1,r++,"g");
+ r=checkR(r);
+ LCD_Out(1,r++,"r");
+ r=checkR(r);
+ LCD_Out(1,r++,"a");
+ r=checkR(r);
+ LCD_Out(1,r++,"m");
+ r=checkR(r);
+}
+
+
+
+
+
+void main() {
+ int i=1;
  TRISA =  0xff ;
  ADCON1 = 0x80;
  Lcd_Init();
  HDisp();
- LDisp();
  byDisp();
+ LDisp();
+ Lcd_Cmd(_LCD_CLEAR);
+ byDisp();
+
+ while(1)
+ {
+ ERotate(i);
+ Delay_ms( 500 );
+ i++;
+ if(i>20)
+ i=1;
+ }
+
 
 
 

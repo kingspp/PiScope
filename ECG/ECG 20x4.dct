@@ -292,6 +292,7 @@ cf_write_byte
 cf_write_init
 cf_write_sector
 character8x7
+checkr
 chs0
 chs0_bit
 chs1
@@ -394,6 +395,7 @@ eepgd_bit
 eeprom_read
 eeprom_write
 equals_double
+erotate
 exp
 expander_init
 expander_init_advanced

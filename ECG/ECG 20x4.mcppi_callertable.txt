@@ -15,6 +15,17 @@ main
 					Delay_1us
 					Delay_5500us
 					Delay_50us
+	byDisp
+		Lcd_Out
+			Lcd_Cmd
+				Delay_1us
+				Delay_5500us
+				Delay_50us
+			Lcd_Chr_CP
+				Lcd_Cmd
+					Delay_1us
+					Delay_5500us
+					Delay_50us
 	LDisp
 		Lcd_Out
 			Lcd_Cmd
@@ -30,7 +41,15 @@ main
 			Delay_1us
 			Delay_5500us
 			Delay_50us
-	byDisp
+	Lcd_Cmd
+		Delay_1us
+		Delay_5500us
+		Delay_50us
+	ERotate
+		Lcd_Cmd
+			Delay_1us
+			Delay_5500us
+			Delay_50us
 		Lcd_Out
 			Lcd_Cmd
 				Delay_1us
@@ -41,3 +60,4 @@ main
 					Delay_1us
 					Delay_5500us
 					Delay_50us
+		checkR

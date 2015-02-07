@@ -23,6 +23,7 @@ sbit LCD_D7_Direction at TRISC7_bit;
 #define HDelay 1
 #define LDelay 1
 #define ByDelay 1
+#define RDelay 500
 
 //Loop Definitions
 #define LRep 3
@@ -120,18 +121,78 @@ void LDisp()
   }
 }
 
+//Function for Rotating Display
+int checkR(int x)
+{
+if(x>20)
+x=0;
+return x;
+}
+
+// Echocardiogram Rotating Display
+void ERotate(int r)
+{
+ int j;
+ Lcd_Cmd(_LCD_CURSOR_OFF);
+ for(j=1;j<21;j++)
+ {
+   LCD_Out(1,j," ");
+ }
+
+  LCD_Out(1,r++,"E");
+  r=checkR(r);
+  LCD_Out(1,r++,"c");
+  r=checkR(r);
+  LCD_Out(1,r++,"h");
+  r=checkR(r);
+  LCD_Out(1,r++,"o");
+  r=checkR(r);
+  LCD_Out(1,r++,"c");
+  r=checkR(r);
+  LCD_Out(1,r++,"a");
+  r=checkR(r);
+  LCD_Out(1,r++,"r");
+  r=checkR(r);
+  LCD_Out(1,r++,"d");
+  r=checkR(r);
+  LCD_Out(1,r++,"i");
+  r=checkR(r);
+  LCD_Out(1,r++,"o");
+  r=checkR(r);
+  LCD_Out(1,r++,"g");
+  r=checkR(r);
+  LCD_Out(1,r++,"r");
+  r=checkR(r);
+  LCD_Out(1,r++,"a");
+  r=checkR(r);
+  LCD_Out(1,r++,"m");
+  r=checkR(r);
+}
+
+
 
 
 // Main Function
 void main() {
-
+  int i=1;
   TRISA = inPut;  // Make Port A as Input
   ADCON1 = 0x80;  // Pic ADC Configuration
   Lcd_Init();// Initialize LCD
   HDisp();
   byDisp();
   LDisp();
-
+  Lcd_Cmd(_LCD_CLEAR);
+  byDisp();
+  
+  while(1)
+  {
+   ERotate(i);
+   Delay_ms(RDelay);
+   i++;
+   if(i>20)
+   i=1;
+  }
+  
   
   
   
