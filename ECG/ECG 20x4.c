@@ -29,7 +29,14 @@ sbit LCD_D7_Direction at TRISC7_bit;
 #define RDelay 500
 
 //Loop Definitions
-#define LRep 3
+#define LRep 0
+
+//Scaling Factor
+#define sf 2
+
+// Global Variables
+int ecg,ppg;
+char eprint,pprint;
 
 
 //Functions
@@ -194,15 +201,38 @@ void epDisp()
   Delay_ms(EPDelay);
 }
 
+//Prints ECG Voltage
+void ecgVal(int ecg)
+{
+   char *volt = "00.0";
+   volt[0] = ecg/1000 + 48;
+   volt[1] = (ecg/100)%10 + 48;
+   volt[3] = (ecg/10)%10 + 48;
+   Lcd_Out(2,5,volt);
+   Lcd_Chr(2,9,'V');
+}
 
-
-
+//Prints PPG Voltage
+void ppgVal(int ppg)
+{
+  char *volt = "00.0";
+   volt[0] = ppg/1000 + 48;
+   volt[1] = (ppg/100)%10 + 48;
+   volt[3] = (ppg/10)%10 + 48;
+   Lcd_Out(3,5,volt);
+   Lcd_Chr(3,9,'V');
+}
 
 // Main Function
 void main() {
+char chVAL[16];
+unsigned int adc_value=0;
   int i=1;
-  TRISA = inPut;  // Make Port A as Input
-  ADCON1 = 0x80;  // Pic ADC Configuration
+  char temp[7];
+  TRISC = 0b00000000; // PORTC All Outputs
+  TRISA = 0b00001100; // PORTA All Outputs, Except RA3 and RA2
+  ADCON0 = 0b10001000; // Analog channel select @ AN2 & AN1
+
   Lcd_Init();// Initialize LCD
   HDisp();
   byDisp();
@@ -214,14 +244,13 @@ void main() {
   while(1)
   {
    ERotate(i);
+   ecg = ADC_Read(2);
+   ppg = ADC_Read(3);
+   ecgVal(ecg/sf);
+   ppgVal(ppg/sf);
    Delay_ms(RDelay);
    i++;
    if(i>20)
    i=1;
   }
-  
-  
-  
-  
-  
 }

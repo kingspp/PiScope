@@ -380,6 +380,8 @@ double2int
 double2longint
 double2longword
 double2word
+ecg
+ecgval
 eeadr
 eeadrh
 eecon1
@@ -395,6 +397,7 @@ eepgd_bit
 eeprom_read
 eeprom_write
 epdisp
+eprint
 equals_double
 erotate
 exp
@@ -660,6 +663,9 @@ portc
 portd
 porte
 pow
+ppg
+ppgval
+pprint
 pr2
 ps0
 ps0_bit

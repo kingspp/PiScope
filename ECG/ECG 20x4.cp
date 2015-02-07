@@ -12,7 +12,13 @@ sbit LCD_D4_Direction at TRISC4_bit;
 sbit LCD_D5_Direction at TRISC5_bit;
 sbit LCD_D6_Direction at TRISC6_bit;
 sbit LCD_D7_Direction at TRISC7_bit;
-#line 37 "F:/Github/PiScope-LCD/ECG/ECG 20x4.c"
+#line 38 "F:/Github/PiScope-LCD/ECG/ECG 20x4.c"
+int ecg,ppg;
+char eprint,pprint;
+
+
+
+
 void HDisp()
 {
  LCD_Out(1,1,"E");
@@ -174,14 +180,37 @@ void epDisp()
 }
 
 
+void ecgVal(int ecg)
+{
+ char *volt = "00.0";
+ volt[0] = ecg/1000 + 48;
+ volt[1] = (ecg/100)%10 + 48;
+ volt[3] = (ecg/10)%10 + 48;
+ Lcd_Out(2,5,volt);
+ Lcd_Chr(2,9,'V');
+}
 
 
+void ppgVal(int ppg)
+{
+ char *volt = "00.0";
+ volt[0] = ppg/1000 + 48;
+ volt[1] = (ppg/100)%10 + 48;
+ volt[3] = (ppg/10)%10 + 48;
+ Lcd_Out(3,5,volt);
+ Lcd_Chr(3,9,'V');
+}
 
 
 void main() {
+char chVAL[16];
+unsigned int adc_value=0;
  int i=1;
- TRISA =  0xff ;
- ADCON1 = 0x80;
+ char temp[7];
+ TRISC = 0b00000000;
+ TRISA = 0b00001100;
+ ADCON0 = 0b10001000;
+
  Lcd_Init();
  HDisp();
  byDisp();
@@ -193,14 +222,13 @@ void main() {
  while(1)
  {
  ERotate(i);
+ ecg = ADC_Read(2);
+ ppg = ADC_Read(3);
+ ecgVal(ecg/ 2 );
+ ppgVal(ppg/ 2 );
  Delay_ms( 500 );
  i++;
  if(i>20)
  i=1;
  }
-
-
-
-
-
 }
