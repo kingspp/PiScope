@@ -545,6 +545,7 @@ lcd_out_cp
 lcd_rs
 lcd_rs_direction
 ldexp
+ldisp
 ldiv
 log
 log10
@@ -556,6 +557,7 @@ longword2double
 longwordtohex
 longwordtostr
 longwordtostrwithzeros
+lrow
 ltrim
 main
 malloc

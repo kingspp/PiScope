@@ -14,15 +14,17 @@ sbit LCD_D7_Direction at TRISC7_bit;
 
 //Delay Definitions
 #define HDelay 1
+#define LDelay 1
 
 //Row Definitions
 
+//Loop Definitions
 
 
 //Column Definitions
 
 //Row Declarations
-int HRow;
+int HRow,LRow;
 
 //Column Declarations
 int HCol;
@@ -57,8 +59,38 @@ void HDisp(int HRow,int HCol)
     Delay_ms(HDelay);
 }
 
-void main() {
+//Prints Loading . . .
+void LDisp(int LRow, int LCol, int LNum, int LRep)
+{
+  int i,j;
+  for(i=0;i<LRep;i++)
+  {
+     for(j=LCol;j<=LCol+LNum;j++)
+     {
+        //Lcd_Cmd(_LCD_CURSOR_OFF);
+        LCD_Out(LRow,j,".");
+        Delay_ms(1000);
+        LCD_Out(LRow,j," ");
+     }
+  }
+}
+
+void PiInit()
+{
      Lcd_Init();
      Lcd_Cmd(_LCD_CURSOR_OFF);
      HDisp(2,5);
+     Delay_ms(1000);
+     LDisp(3,9,4,3);
+     Delay_ms(2000);
+     Lcd_Cmd(_LCD_CLEAR);
+}
+
+void main() {
+   PiInit();
+   
+   
+   
+
+     
 }

@@ -12,8 +12,8 @@ sbit LCD_D4_Direction at TRISC4_bit;
 sbit LCD_D5_Direction at TRISC5_bit;
 sbit LCD_D6_Direction at TRISC6_bit;
 sbit LCD_D7_Direction at TRISC7_bit;
-#line 25 "F:/Github/PiScope-LCD/PiScope/PiScope.c"
-int HRow;
+#line 27 "F:/Github/PiScope-LCD/PiScope/PiScope.c"
+int HRow,LRow;
 
 
 int HCol;
@@ -48,8 +48,29 @@ void HDisp(int HRow,int HCol)
  Delay_ms( 1 );
 }
 
+
+void LDisp(int LRow, int LCol, int LNum, int LRep)
+{
+ int i,j;
+ for(i=0;i<LRep;i++)
+ {
+ for(j=LCol;j<=LCol+LNum;j++)
+ {
+
+ LCD_Out(LRow,j,".");
+ Delay_ms(1000);
+ LCD_Out(LRow,j," ");
+ }
+ }
+}
+
 void main() {
  Lcd_Init();
  Lcd_Cmd(_LCD_CURSOR_OFF);
  HDisp(2,5);
+ Delay_ms(1000);
+ LDisp(3,9,4,3);
+ Delay_ms(2000);
+
+
 }
