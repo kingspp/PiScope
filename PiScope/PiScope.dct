@@ -426,6 +426,7 @@ font_glcd_system5x7
 font5x7
 fontsystem5x7_v2
 freemem
+frequency
 frexp
 fsr
 fsrptr
@@ -549,6 +550,7 @@ lcd_rs_direction
 lcdclr
 ldexp
 ldisp
+ldisp1
 ldiv
 log
 log10
@@ -654,6 +656,7 @@ pen
 pen_bit
 pie1
 pie2
+pigen
 piinit
 pir1
 pir2
@@ -896,6 +899,7 @@ setfun32
 setiov3224
 shorttohex
 shorttostr
+signal
 sin
 sine3
 sinh

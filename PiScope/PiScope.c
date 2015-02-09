@@ -29,6 +29,12 @@ int HRow,LRow;
 //Column Declarations
 int HCol;
 
+//String Declarations
+char *pigen="PiGen";
+char *frequency="Frequency:";
+char *signal="Signal:";
+
+
 //Global Declarations
 char lcdClr=0;
 
@@ -65,7 +71,7 @@ void HDisp(int HRow,int HCol)
 
 
 //Prints Loading . . .
-void LDisp(int LRow, int LCol, int LNum, int LRep)
+void LDisp1(int LRow, int LCol, int LNum, int LRep)
 {
   int i,j;
   for(i=0;i<LRep;i++)
@@ -76,6 +82,19 @@ void LDisp(int LRow, int LCol, int LNum, int LRep)
         Delay_ms(1000);
         LCD_Out(LRow,j," ");
      }
+  }
+}
+
+//Prints Loading . . .
+void LDisp(int LRow, int LCol, int LNum, int LRep)
+{
+  int i,j;
+  for(i=0;i<LRep;i++)
+  {
+        LCD_Out(LRow,10,"/");
+        Delay_ms(1000);
+        LCD_Out(LRow,10,"-");
+        Delay_ms(1000);
   }
 }
 
@@ -104,9 +123,9 @@ void main() {
    IntInit();
    TRISD.F0 = 1; //Configure 1st bit of PORTD as input
    
-   HDisp(1,1);
-   Lcd_Chr(2,1,"Frequency:");
-   Lcd_Out(3,1,"Signal:");
+   Lcd_Out(1,1,pigen);
+   Lcd_Out(2,1,frequency);
+   Lcd_Out(3,1,signal);
    while(1)
    if(lcdClr==1)
    {
@@ -123,5 +142,3 @@ void interrupt() //  ISR
    lcdClr=1;
   }
 }
-
-
