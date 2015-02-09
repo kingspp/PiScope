@@ -1,13 +1,37 @@
 main
 	__CC2DW
 		____DoICP
-	Lcd_Init
-		Delay_5500us
-		Delay_1us
-	Lcd_Cmd
-		Delay_1us
-		Delay_5500us
-		Delay_50us
+	PiInit
+		Lcd_Init
+			Delay_5500us
+			Delay_1us
+		Lcd_Cmd
+			Delay_1us
+			Delay_5500us
+			Delay_50us
+		HDisp
+			Lcd_Out
+				Lcd_Cmd
+					Delay_1us
+					Delay_5500us
+					Delay_50us
+				Lcd_Chr_CP
+					Lcd_Cmd
+						Delay_1us
+						Delay_5500us
+						Delay_50us
+		LDisp
+			Lcd_Out
+				Lcd_Cmd
+					Delay_1us
+					Delay_5500us
+					Delay_50us
+				Lcd_Chr_CP
+					Lcd_Cmd
+						Delay_1us
+						Delay_5500us
+						Delay_50us
+	IntInit
 	HDisp
 		Lcd_Out
 			Lcd_Cmd
@@ -19,14 +43,23 @@ main
 					Delay_1us
 					Delay_5500us
 					Delay_50us
-	LDisp
-		Lcd_Out
+	Lcd_Chr
+		Lcd_Cmd
+			Delay_1us
+			Delay_5500us
+			Delay_50us
+	Lcd_Out
+		Lcd_Cmd
+			Delay_1us
+			Delay_5500us
+			Delay_50us
+		Lcd_Chr_CP
 			Lcd_Cmd
 				Delay_1us
 				Delay_5500us
 				Delay_50us
-			Lcd_Chr_CP
-				Lcd_Cmd
-					Delay_1us
-					Delay_5500us
-					Delay_50us
+	Lcd_Cmd
+		Delay_1us
+		Delay_5500us
+		Delay_50us
+interrupt

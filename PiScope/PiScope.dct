@@ -505,8 +505,10 @@ inte
 inte_bit
 intedg
 intedg_bit
+interrupt
 intf
 intf_bit
+intinit
 inttohex
 inttostr
 inttostrwithzeros
@@ -544,6 +546,7 @@ lcd_out
 lcd_out_cp
 lcd_rs
 lcd_rs_direction
+lcdclr
 ldexp
 ldisp
 ldiv
@@ -651,6 +654,7 @@ pen
 pen_bit
 pie1
 pie2
+piinit
 pir1
 pir2
 porta

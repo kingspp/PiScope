@@ -29,8 +29,12 @@ int HRow,LRow;
 //Column Declarations
 int HCol;
 
+//Global Declarations
+char lcdClr=0;
+
 //Functions
 // Prints Echocardiogram
+
 void HDisp(int HRow,int HCol)
 {
     LCD_Out(HRow,HCol++,"P");
@@ -59,6 +63,7 @@ void HDisp(int HRow,int HCol)
     Delay_ms(HDelay);
 }
 
+
 //Prints Loading . . .
 void LDisp(int LRow, int LCol, int LNum, int LRep)
 {
@@ -67,7 +72,6 @@ void LDisp(int LRow, int LCol, int LNum, int LRep)
   {
      for(j=LCol;j<=LCol+LNum;j++)
      {
-        //Lcd_Cmd(_LCD_CURSOR_OFF);
         LCD_Out(LRow,j,".");
         Delay_ms(1000);
         LCD_Out(LRow,j," ");
@@ -86,11 +90,38 @@ void PiInit()
      Lcd_Cmd(_LCD_CLEAR);
 }
 
+void IntInit()
+{
+  OPTION_REG.INTEDG = 1; // Set Rising Edge Trigger for INT
+  INTCON.GIE = 1; // Enable The Global Interrupt
+  INTCON.INTE = 1; // Enable INT
+}
+
+
+
 void main() {
    PiInit();
+   IntInit();
+   TRISD.F0 = 1; //Configure 1st bit of PORTD as input
    
-   
-   
-
-     
+   HDisp(1,1);
+   Lcd_Chr(2,1,"Frequency:");
+   Lcd_Out(3,1,"Signal:");
+   while(1)
+   if(lcdClr==1)
+   {
+    Lcd_Cmd(_LCD_CLEAR);
+    lcdClr=0;
+   }
 }
+
+void interrupt() //  ISR
+{
+ INTCON.INTF=0; // Clear the interrupt 0 flag
+  //if(PORTD.F0 == 0)   //If the switch is pressed
+  {
+   lcdClr=1;
+  }
+}
+
+

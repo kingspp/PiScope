@@ -19,6 +19,10 @@ int HRow,LRow;
 int HCol;
 
 
+char lcdClr=0;
+
+
+
 
 void HDisp(int HRow,int HCol)
 {
@@ -49,6 +53,7 @@ void HDisp(int HRow,int HCol)
 }
 
 
+
 void LDisp(int LRow, int LCol, int LNum, int LRep)
 {
  int i,j;
@@ -56,7 +61,6 @@ void LDisp(int LRow, int LCol, int LNum, int LRep)
  {
  for(j=LCol;j<=LCol+LNum;j++)
  {
-
  LCD_Out(LRow,j,".");
  Delay_ms(1000);
  LCD_Out(LRow,j," ");
@@ -64,13 +68,47 @@ void LDisp(int LRow, int LCol, int LNum, int LRep)
  }
 }
 
-void main() {
+void PiInit()
+{
  Lcd_Init();
  Lcd_Cmd(_LCD_CURSOR_OFF);
  HDisp(2,5);
  Delay_ms(1000);
  LDisp(3,9,4,3);
  Delay_ms(2000);
+ Lcd_Cmd(_LCD_CLEAR);
+}
+
+void IntInit()
+{
+ OPTION_REG.INTEDG = 1;
+ INTCON.GIE = 1;
+ INTCON.INTE = 1;
+}
 
 
+
+void main() {
+ PiInit();
+ IntInit();
+ TRISD.F0 = 1;
+
+ HDisp(1,1);
+ Lcd_Chr(2,1,"Frequency:");
+ Lcd_Out(3,1,"Signal:");
+ while(1)
+ if(lcdClr==1)
+ {
+ Lcd_Cmd(_LCD_CLEAR);
+ lcdClr=0;
+ }
+}
+
+void interrupt()
+{
+ INTCON.INTF=0;
+
+ {
+ lcdClr=1;
+ }
 }
