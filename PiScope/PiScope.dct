@@ -290,6 +290,7 @@ cf_read_sector
 cf_write_byte
 cf_write_init
 cf_write_sector
+changesig
 character8x7
 chs0
 chs0_bit
@@ -900,6 +901,8 @@ setiov3224
 shorttohex
 shorttostr
 signal
+signaltype
+signaltypei
 sin
 sine3
 sinh

@@ -15,6 +15,7 @@ sbit LCD_D7_Direction at TRISC7_bit;
 //Delay Definitions
 #define HDelay 1
 #define LDelay 1
+#define LCDWriteDelay 1000
 
 //Row Definitions
 
@@ -33,6 +34,9 @@ int HCol;
 char *pigen="PiGen";
 char *frequency="Frequency:";
 char *signal="Signal:";
+
+char *signalType="Sine" ;
+int signalTypeI=0 ;
 
 
 //Global Declarations
@@ -92,21 +96,30 @@ void LDisp(int LRow, int LCol, int LNum, int LRep)
   for(i=0;i<LRep;i++)
   {
         LCD_Out(LRow,10,"/");
-        Delay_ms(1000);
+        Delay_ms(500);
         LCD_Out(LRow,10,"-");
-        Delay_ms(1000);
+        Delay_ms(500);
+         LCD_Out(LRow,10,"|");
+        Delay_ms(500);
   }
 }
 
 void PiInit()
 {
-     Lcd_Init();
-     Lcd_Cmd(_LCD_CURSOR_OFF);
-     HDisp(2,5);
-     Delay_ms(1000);
-     LDisp(3,9,4,3);
-     Delay_ms(2000);
-     Lcd_Cmd(_LCD_CLEAR);
+   Lcd_Init();
+   Lcd_Cmd(_LCD_CURSOR_OFF);
+   HDisp(2,5);
+   Delay_ms(LCDWriteDelay);
+   LDisp(3,9,4,5);
+   Delay_ms(LCDWriteDelay);
+   Lcd_Cmd(_LCD_CLEAR);
+   Delay_ms(LCDWriteDelay);
+   Lcd_Out(1,1,pigen);
+   Delay_ms(LCDWriteDelay);
+   Lcd_Out(2,1,frequency);
+   Delay_ms(LCDWriteDelay);
+   Lcd_Out(3,1,signal);
+   Delay_ms(LCDWriteDelay);
 }
 
 void IntInit()
@@ -116,22 +129,50 @@ void IntInit()
   INTCON.INTE = 1; // Enable INT
 }
 
+void ChangeSig()
+{
+    switch (signalTypeI)
+    {
+         case 0:
+                  *signalType="Square";
+                  signalTypeI=1  ;
+         break;
+         
+         case 1:
+                  *signalType="Sine"  ;
+                  signalTypeI=0;
+                  
+         break;
+    }
+    Delay_ms(250);
+    Lcd_Out(3,9,signalType);
+
+}
+
 
 
 void main() {
-   PiInit();
    IntInit();
-   TRISD.F0 = 1; //Configure 1st bit of PORTD as input
-   
-   Lcd_Out(1,1,pigen);
-   Lcd_Out(2,1,frequency);
-   Lcd_Out(3,1,signal);
-   while(1)
+   PiInit();
+
+   TRISB = 0xff; //Configure 1st bit of PORTD as input
+
+
+
+   while(1) {
+   /*
+   //Interrupt Test
    if(lcdClr==1)
    {
     Lcd_Cmd(_LCD_CLEAR);
     lcdClr=0;
    }
+   */
+   //if(PORTB.F6==1)
+  // ChangeSig();
+
+   }
+
 }
 
 void interrupt() //  ISR

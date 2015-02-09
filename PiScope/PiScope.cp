@@ -12,7 +12,7 @@ sbit LCD_D4_Direction at TRISC4_bit;
 sbit LCD_D5_Direction at TRISC5_bit;
 sbit LCD_D6_Direction at TRISC6_bit;
 sbit LCD_D7_Direction at TRISC7_bit;
-#line 27 "F:/Github/PiScope-LCD/PiScope/PiScope.c"
+#line 28 "F:/Github/PiScope-LCD/PiScope/PiScope.c"
 int HRow,LRow;
 
 
@@ -22,6 +22,9 @@ int HCol;
 char *pigen="PiGen";
 char *frequency="Frequency:";
 char *signal="Signal:";
+
+char *signalType="Sine" ;
+int signalTypeI=0 ;
 
 
 
@@ -81,9 +84,11 @@ void LDisp(int LRow, int LCol, int LNum, int LRep)
  for(i=0;i<LRep;i++)
  {
  LCD_Out(LRow,10,"/");
- Delay_ms(1000);
+ Delay_ms(500);
  LCD_Out(LRow,10,"-");
- Delay_ms(1000);
+ Delay_ms(500);
+ LCD_Out(LRow,10,"|");
+ Delay_ms(500);
  }
 }
 
@@ -92,10 +97,17 @@ void PiInit()
  Lcd_Init();
  Lcd_Cmd(_LCD_CURSOR_OFF);
  HDisp(2,5);
- Delay_ms(1000);
- LDisp(3,9,4,3);
- Delay_ms(2000);
+ Delay_ms( 1000 );
+ LDisp(3,9,4,5);
+ Delay_ms( 1000 );
  Lcd_Cmd(_LCD_CLEAR);
+ Delay_ms( 1000 );
+ Lcd_Out(1,1,pigen);
+ Delay_ms( 1000 );
+ Lcd_Out(2,1,frequency);
+ Delay_ms( 1000 );
+ Lcd_Out(3,1,signal);
+ Delay_ms( 1000 );
 }
 
 void IntInit()
@@ -105,22 +117,40 @@ void IntInit()
  INTCON.INTE = 1;
 }
 
+void ChangeSig()
+{
+ switch (signalTypeI)
+ {
+ case 0:
+ *signalType="Square";
+ signalTypeI=1 ;
+ break;
+
+ case 1:
+ *signalType="Sine" ;
+ signalTypeI=0;
+
+ break;
+ }
+ Delay_ms(250);
+ Lcd_Out(3,9,signalType);
+
+}
+
 
 
 void main() {
- PiInit();
  IntInit();
- TRISD.F0 = 1;
+ PiInit();
 
- Lcd_Out(1,1,pigen);
- Lcd_Out(2,1,frequency);
- Lcd_Out(3,1,signal);
- while(1)
- if(lcdClr==1)
- {
- Lcd_Cmd(_LCD_CLEAR);
- lcdClr=0;
+ TRISB = 0xff;
+
+
+
+ while(1) {
+#line 174 "F:/Github/PiScope-LCD/PiScope/PiScope.c"
  }
+
 }
 
 void interrupt()
