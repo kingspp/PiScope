@@ -28,7 +28,7 @@ int signalTypeI=0 ;
 
 
 
-char lcdClr=0;
+char lcdClr=99;
 
 
 
@@ -61,6 +61,13 @@ void HDisp(int HRow,int HCol)
  Delay_ms( 1 );
 }
 
+
+void LcdClearLine(int line)
+{
+int i=0;
+for(;i<21;i++)
+Lcd_Out(line,i," ");
+}
 
 
 void LDisp1(int LRow, int LCol, int LNum, int LRep)
@@ -97,17 +104,19 @@ void PiInit()
  Lcd_Init();
  Lcd_Cmd(_LCD_CURSOR_OFF);
  HDisp(2,5);
- Delay_ms( 1000 );
- LDisp(3,9,4,5);
- Delay_ms( 1000 );
+ Delay_ms( 50 );
+ LDisp(3,9,4,3);
+ Delay_ms( 50 );
  Lcd_Cmd(_LCD_CLEAR);
- Delay_ms( 1000 );
+ Delay_ms( 50 );
  Lcd_Out(1,1,pigen);
- Delay_ms( 1000 );
+ Delay_ms( 50 );
  Lcd_Out(2,1,frequency);
- Delay_ms( 1000 );
+ Delay_ms( 50 );
  Lcd_Out(3,1,signal);
- Delay_ms( 1000 );
+ Delay_ms( 50 );
+ Lcd_Out(3,1,signal);
+ Delay_ms( 50 );
 }
 
 void IntInit()
@@ -122,19 +131,27 @@ void ChangeSig()
  switch (signalTypeI)
  {
  case 0:
- *signalType="Square";
+ signalType="Square";
  signalTypeI=1 ;
  break;
 
  case 1:
- *signalType="Sine" ;
+ signalType="Sine";
  signalTypeI=0;
 
  break;
  }
- Delay_ms(250);
+ LcdClearLine(3);
+ Delay_ms( 50 );
+ Lcd_Out(3,1,signal);
+ Delay_ms( 50 );
  Lcd_Out(3,9,signalType);
+ Delay_ms(250);
+}
 
+void UpdateFreq()
+{
+ int x;
 }
 
 
@@ -148,7 +165,26 @@ void main() {
 
 
  while(1) {
-#line 174 "F:/Github/PiScope-LCD/PiScope/PiScope.c"
+
+
+ if(lcdClr==1)
+ {
+ Lcd_Cmd(_LCD_CLEAR);
+ lcdClr=0;
+ }
+
+ if(lcdClr==0)
+ {
+
+ lcdClr=1;
+ }
+
+
+ if(PORTB.F6==1)
+ ChangeSig();
+ if(PORTB.F6==1 || PORTB.F7==1)
+ UpdateFreq();
+
  }
 
 }
@@ -156,8 +192,8 @@ void main() {
 void interrupt()
 {
  INTCON.INTF=0;
-
- {
+ if(lcdClr==0)
  lcdClr=1;
- }
+ else if(lcdClr==1)
+ lcdClr=0;
 }

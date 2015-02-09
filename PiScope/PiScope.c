@@ -15,7 +15,7 @@ sbit LCD_D7_Direction at TRISC7_bit;
 //Delay Definitions
 #define HDelay 1
 #define LDelay 1
-#define LCDWriteDelay 1000
+#define LCDWriteDelay 50
 
 //Row Definitions
 
@@ -40,10 +40,10 @@ int signalTypeI=0 ;
 
 
 //Global Declarations
-char lcdClr=0;
+char lcdClr=99;
 
 //Functions
-// Prints Echocardiogram
+// Prints PiScope
 
 void HDisp(int HRow,int HCol)
 {
@@ -73,6 +73,13 @@ void HDisp(int HRow,int HCol)
     Delay_ms(HDelay);
 }
 
+//Clear Line Functions
+void LcdClearLine(int line)
+{
+int i=0;
+for(;i<21;i++)
+Lcd_Out(line,i," ");
+}
 
 //Prints Loading . . .
 void LDisp1(int LRow, int LCol, int LNum, int LRep)
@@ -110,13 +117,15 @@ void PiInit()
    Lcd_Cmd(_LCD_CURSOR_OFF);
    HDisp(2,5);
    Delay_ms(LCDWriteDelay);
-   LDisp(3,9,4,5);
+   LDisp(3,9,4,3);
    Delay_ms(LCDWriteDelay);
    Lcd_Cmd(_LCD_CLEAR);
    Delay_ms(LCDWriteDelay);
    Lcd_Out(1,1,pigen);
    Delay_ms(LCDWriteDelay);
    Lcd_Out(2,1,frequency);
+   Delay_ms(LCDWriteDelay);
+   Lcd_Out(3,1,signal);
    Delay_ms(LCDWriteDelay);
    Lcd_Out(3,1,signal);
    Delay_ms(LCDWriteDelay);
@@ -134,19 +143,27 @@ void ChangeSig()
     switch (signalTypeI)
     {
          case 0:
-                  *signalType="Square";
+                  signalType="Square";
                   signalTypeI=1  ;
          break;
          
          case 1:
-                  *signalType="Sine"  ;
+                  signalType="Sine";
                   signalTypeI=0;
                   
          break;
     }
-    Delay_ms(250);
+    LcdClearLine(3);
+    Delay_ms(LCDWriteDelay);
+    Lcd_Out(3,1,signal);
+    Delay_ms(LCDWriteDelay);
     Lcd_Out(3,9,signalType);
+    Delay_ms(250);
+}
 
+void UpdateFreq()
+{
+  int x;
 }
 
 
@@ -160,16 +177,25 @@ void main() {
 
 
    while(1) {
-   /*
+
    //Interrupt Test
    if(lcdClr==1)
    {
     Lcd_Cmd(_LCD_CLEAR);
     lcdClr=0;
    }
-   */
-   //if(PORTB.F6==1)
-  // ChangeSig();
+   
+   if(lcdClr==0)
+   {
+    //main();
+    lcdClr=1;
+   }
+
+
+   if(PORTB.F6==1)
+   ChangeSig();
+   if(PORTB.F6==1 || PORTB.F7==1)
+   UpdateFreq();
 
    }
 
@@ -177,9 +203,9 @@ void main() {
 
 void interrupt() //  ISR
 {
- INTCON.INTF=0; // Clear the interrupt 0 flag
-  //if(PORTD.F0 == 0)   //If the switch is pressed
-  {
-   lcdClr=1;
-  }
+  INTCON.INTF=0; // Clear the interrupt 0 flag
+  if(lcdClr==0)
+  lcdClr=1;
+  else if(lcdClr==1)
+  lcdClr=0;
 }

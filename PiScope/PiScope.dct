@@ -548,6 +548,7 @@ lcd_out
 lcd_out_cp
 lcd_rs
 lcd_rs_direction
+lcdclearline
 lcdclr
 ldexp
 ldisp
@@ -1346,6 +1347,7 @@ uart1_tx_idle
 uart1_write
 uart1_write_text
 uldiv
+updatefreq
 vdelay_advanced_ms
 vdelay_ms
 w
