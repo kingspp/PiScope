@@ -1,0 +1,15 @@
+8 Touch Switches
+
+4 Touch Switches
+3 One Stop Switch
+1 Toggle Switch
+
+
+Type of Signal - 1 Touch Switch
+Increment - 1 Touch Switch
+Decrement- 1 Touch Switch
+Range - 1 Touch Switch
+On/Off - 1 Toggle
+Fine/Coarse - 1 One Stop Switch
+Attenuation - 1 One Stop Switch
+Offset - 1 One Stop Switch

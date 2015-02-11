@@ -1,16 +1,36 @@
+/*
+Project : PiScope
+@Author : Prathyush SP
+MCU     : PIC16F877A
+LANG    : C
+PG      : MikroC Pro v6.5.0
+
+//PIC Configurations
+
+Port A - ADC Port
+Port B - LCD Port / Interrupt Port
+Port C - PiGen
+Port D - PiAnalyze
+
+
+
+
+*/
+
 // LCD module connections
-sbit LCD_RS at RC2_bit;
-sbit LCD_EN at RC3_bit;
-sbit LCD_D4 at RC4_bit;
-sbit LCD_D5 at RC5_bit;
-sbit LCD_D6 at RC6_bit;
-sbit LCD_D7 at RC7_bit;
-sbit LCD_RS_Direction at TRISC2_bit;
-sbit LCD_EN_Direction at TRISC3_bit;
-sbit LCD_D4_Direction at TRISC4_bit;
-sbit LCD_D5_Direction at TRISC5_bit;
-sbit LCD_D6_Direction at TRISC6_bit;
-sbit LCD_D7_Direction at TRISC7_bit;
+sbit LCD_D4 at RB2_bit; //change this
+sbit LCD_D5 at RB3_bit; //change this
+sbit LCD_D6 at RB4_bit;
+sbit LCD_D7 at RB5_bit;
+sbit LCD_EN at RB6_bit;
+sbit LCD_RS at RB7_bit;
+
+sbit LCD_RS_Direction at TRISB7_bit;
+sbit LCD_EN_Direction at TRISB6_bit;
+sbit LCD_D4_Direction at TRISB2_bit;
+sbit LCD_D5_Direction at TRISB3_bit;
+sbit LCD_D6_Direction at TRISB4_bit;
+sbit LCD_D7_Direction at TRISB5_bit;
 
 //Delay Definitions
 #define HDelay 1
@@ -113,7 +133,7 @@ void LDisp(int LRow, int LCol, int LNum, int LRep)
 
 void PiInit()
 {
-   Lcd_Init();
+
    Lcd_Cmd(_LCD_CURSOR_OFF);
    HDisp(2,5);
    Delay_ms(LCDWriteDelay);
@@ -172,7 +192,9 @@ void main() {
    IntInit();
    PiInit();
 
-   TRISB = 0xff; //Configure 1st bit of PORTD as input
+
+
+   TRISB = 0x00; //Configure 1st bit of PORTD as input
 
 
 
@@ -187,14 +209,14 @@ void main() {
    
    if(lcdClr==0)
    {
-    //main();
+    PiInit();
     lcdClr=1;
    }
 
 
-   if(PORTB.F6==1)
+   if(PORTC.F6==1)
    ChangeSig();
-   if(PORTB.F6==1 || PORTB.F7==1)
+   if(PORTC.F6==1 || PORTC.F7==1)
    UpdateFreq();
 
    }

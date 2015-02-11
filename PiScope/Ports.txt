@@ -1,0 +1,8 @@
+PIC16F877A
+
+4 Ports * 8 Pins
+
+PortA - ADC
+PortB - LCD Display
+PortC - AD9850
+PortD - Switches
