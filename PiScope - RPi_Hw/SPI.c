@@ -18,16 +18,10 @@ void main()
 		bcm2835_spi_setDataMode(BCM2835_SPI_MODE0);                   // The default
 		bcm2835_spi_setClockDivider(BCM2835_SPI_CLOCK_DIVIDER_65536); // The default
 		bcm2835_spi_chipSelect(BCM2835_SPI_CS0);                      // The default
-		bcm2835_spi_setChipSelectPolarity(BCM2835_SPI_CS0, LOW);      // the default
-		
-		
-		
+		bcm2835_spi_setChipSelectPolarity(BCM2835_SPI_CS0, LOW);      // the default		
 		uint8_t data = bcm2835_spi_transfer(0x23);
-		printf("Read from SPI: %02X\n", data);
-		
+		printf("Read from SPI: %02X\n", data);		
 		bcm2835_spi_end();
-		bcm2835_close();
-		
+		bcm2835_close();		
 	}
 }
-
