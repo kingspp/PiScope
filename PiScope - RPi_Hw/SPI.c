@@ -1,7 +1,7 @@
-
 // Copyright (C) 2012 Mike McCauley
 // Modified by @kingspp
-
+//Compile: gcc -o spi spi.c -l bcm2835
+//Run:     sudo ./spi
 #include <bcm2835.h>
 #include <stdio.h>
 
