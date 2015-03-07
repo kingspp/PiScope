@@ -22,8 +22,11 @@ No  PIN-MCP3208		    No PIN-RPi
 15	Vref         --->	2   5V
 16	Vdd          --->   2   5V
 
-
+For faster SPI access add this to boot.config
+Run: sudo sed -i '$s/$/\ndisable_pvt=1/' /boot/config.txt
 */
+
+
 #include <bcm2835.h>
 #include <stdio.h>
 #include <time.h>
