@@ -1,7 +1,29 @@
-// Copyright (C) 2012 Mike McCauley
-// Modified by @kingspp
-//Compile: gcc -o spi spi.c -l bcm2835
-//Run:     sudo ./spi
+/*
+Copyright (C) 2012 Mike McCauley
+Modified by @kingspp
+Compile: gcc -o spim spim.c -l bcm2835
+Run:     sudo ./spim
+This is used for Multi-Data read/write
+
+Board: Raspberry Pi v B+
+Pin Diagram: http://data.designspark.info/uploads/images/53bc258dc6c0425cb44870b50ab30621
+
+ADC Chipset: MCP3208
+Pin Diagram: http://simhq.com/forum/files/usergals/2014/10/full-37484-89387-mcp3208.png
+
+No  PIN-MCP3208		    No PIN-RPi
+1 	Channel0	 ---> 	Input Voltage Source	
+9	DGND		 --->	9 	GND
+10	Chip Select  --->   24 	CE0(GPIO8)
+11	Din	         --->   19  MOSI(GPIO10)
+12	Dout         --->   21  MISO(GPIO9)
+13	CLK          --->   23  SCLK(GPIO11)
+14	AGND         --->   14  GND
+15	Vref         --->	2   5V
+16	Vdd          --->   2   5V
+
+*/
+
 #include <bcm2835.h>
 #include <stdio.h>
 
@@ -24,4 +46,4 @@ void main()
 		bcm2835_spi_end();
 		bcm2835_close();		
 	}
-}
+	}
