@@ -31,20 +31,29 @@ Run: sudo sed -i '$s/$/\ndisable_pvt=1/' /boot/config.txt
 #include <stdio.h>
 #include <time.h>
 
-#define SampleSize 10
+// Copyright (C) 2012 Mike McCauley
+// Modified by @kingspp
+//Compile: gcc -o spim spim.c -l bcm2835
+//Run:     sudo ./spim
 
-void main()
+#include <bcm2835.h>
+#include <stdio.h>
+#include <time.h>
+
+#define SampleSize 25000
+
+int main()
 {
 	float temp;
 	int i=0;
 	float t;
-	float data[25000];
+	float data[51000];
 	
     FILE *f = fopen("values.dat", "w");
 	if (f == NULL)
 	{
 		printf("Error opening file!\n");
-		exit(1);
+		//exit(1);
 	}
 	fprintf(f,"#	X	Y\n");
 	
@@ -83,13 +92,13 @@ void main()
 	float dif = difftime (end,start);
 	printf ("\n\n Elasped time is %.3f seconds.", dif );
 	
-	dif=(dif*1000)/SampleSize;
+	dif=(dif)/SampleSize;
 	t=0;	
-	for(i=1;i<SampleSize;i++)
+	for(i=1;i<500;i++)
 	//fprintf(f,"%.2f	%.2f\n",t+=dif,data[i]);
-    fprintf(f,"%.6f	%.2f\n",t++,data[i]);
+	 fprintf(f,"%.6f	%.6f\n",t+=dif,data[i]);
 	fclose(f);
-	
+	return 0;	
 	
 	//fprintf(f, "(%d): %.2f V\n",i++, temp);
 	//printf("Read from SPI (%d): %.2f V\n",i++, temp );	
