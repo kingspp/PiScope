@@ -26,11 +26,6 @@ For faster SPI access add this to boot.config
 Run: sudo sed -i '$s/$/\ndisable_pvt=1/' /boot/config.txt
 */
 
-
-#include <bcm2835.h>
-#include <stdio.h>
-#include <time.h>
-
 // Copyright (C) 2012 Mike McCauley
 // Modified by @kingspp
 //Compile: gcc -o spim spim.c -l bcm2835
@@ -46,16 +41,15 @@ int main()
 {
 	float temp;
 	int i=0;
-	float t;
+	float tgnu=0,tjava=0;
 	float data[51000];
 	
-    FILE *f = fopen("values.dat", "w");
-	if (f == NULL)
-	{
-		printf("Error opening file!\n");
-		//exit(1);
-	}
-	fprintf(f,"#	X	Y\n");
+    FILE *fgnu = fopen("values.dat", "w");
+	FILE *fjava = fopen("values.java", "w");
+	if (fgnu == NULL || fjava == NULL)	
+		printf("Error opening file!\n");		
+	
+	fprintf(fgnu,"#	X	Y\n");
 	
 	time_t start,end;
 	time (&start);
@@ -73,16 +67,12 @@ int main()
 		char buf[] = { 0x01, 0x02, 0x03 }; // Data to send
 		bcm2835_spi_transfern(buf, sizeof(buf)); 
 		
-		
 		temp=buf[2];
 		temp=temp/(255/99);
-		temp=temp/1000;
-		
+		temp=temp/1000; 		
 		temp+=buf[1];
-		data[i]=temp;
 		
-		
-		
+		data[i]=temp;		
 		bcm2835_spi_end();
 		bcm2835_close();
 		
@@ -93,15 +83,17 @@ int main()
 	printf ("\n\n Elasped time is %.3f seconds.", dif );
 	
 	dif=(dif)/SampleSize;
-	t=0;	
-	for(i=1;i<500;i++)
+	
+	for(i=1;i<120;i++){
 	//fprintf(f,"%.2f	%.2f\n",t+=dif,data[i]);
-	 fprintf(f,"%.6f	%.6f\n",t+=dif,data[i]);
-	fclose(f);
-	return 0;	
-	
+    //Gnuplot
+	fprintf(fgnu,"%.6f	%.6f\n",tgnu+=dif,data[i]);
+	//PiScope JAVAFX
+	fprintf(fjava,"%.6f\n%.6f\n",data[i],tjava+=dif);	
 	//fprintf(f, "(%d): %.2f V\n",i++, temp);
-	//printf("Read from SPI (%d): %.2f V\n",i++, temp );	
-	
+	//printf("Read from SPI (%d): %.2f V\n",i++, temp );
+	}
+	fclose(fgnu);
+	fclose(fjava);
+	return 0;		
 }
-
