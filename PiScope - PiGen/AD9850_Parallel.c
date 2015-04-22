@@ -48,6 +48,8 @@
 #define RSET   RB3
 #define POn    RA0
 
+#define DDS_CLOCK 125000000
+
 //Initialize AD9850 IC
 void AD9850_Init(){
     W_CLK=0;
@@ -72,8 +74,8 @@ void AD9850_Reset(){
 }
 
 //Parallel Load in AD9850 Chip
-void AD9850_OscP(){
-    long tuning_freq=0x00000D6C;
+void AD9850_OscP(long freq){
+    long tuning_freq=freq;
     long temp;
     //unsigned char your_PORTD;
 
@@ -127,6 +129,12 @@ void AD9850_OscP(){
     PORTD=0x00;
 }
 
+long FreqUp(float val)
+{
+	val = (val * pow(2,32)) / DDS_CLOCK;
+        return val;
+}
+
 //Main Function
 void main(){
 
@@ -137,5 +145,5 @@ void main(){
    POn=1;
    AD9850_Init();
    AD9850_Reset();
-   AD9850_OscP();
+   AD9850_OscP(FreqUp(100000));
 }
