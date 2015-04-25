@@ -42,11 +42,11 @@
 //END CONFIG
 
 //Define Pins
-#define W_CLK  RB0
-#define FQ_UD  RB1
-#define DATA   RB2
-#define RSET   RB3
-#define POn    RA0
+#define W_CLK  RA0
+#define FQ_UD  RA1
+#define DATA   RA2
+#define RSET   RA3
+#define POn    RC0
 
 #define DDS_CLOCK 125000000
 
@@ -77,61 +77,49 @@ void AD9850_Reset(){
 void AD9850_OscP(long freq){
     long tuning_freq=freq;
     long temp;
-    //unsigned char your_PORTD;
-
     FQ_UD=0;
-    __delay_ms(50);
 
     //W0
     W_CLK=0;
     PORTD=0x00;
     W_CLK=1;
     __delay_ms(50);
-    W_CLK=0;
-    __delay_ms(50);
+    W_CLK=0;  
 
     //W1
     temp = tuning_freq & 0xFF000000;
-    PORTD = temp >> 24;  /* your_PORTD variable contains now bits b31-b24 */
-    __delay_ms(50);
+    PORTD = temp >> 24;  /* your_PORTD variable contains now bits b31-b24 */  
     W_CLK=1;
     __delay_ms(50);
-    W_CLK=0;
-    __delay_ms(50);
+    W_CLK=0;  
 
     //W2
     temp = tuning_freq & 0x00FF0000;
-    PORTD = temp >> 16;  /* your_PORTD variable contains now bits b23-b16 */
-    __delay_ms(50);
+    PORTD = temp >> 16;  /* your_PORTD variable contains now bits b23-b16 */  
     W_CLK=1;
     __delay_ms(50);
-    W_CLK=0;
-    __delay_ms(50);
+    W_CLK=0;  
 
     //W3
     temp = tuning_freq & 0x0000FF00;
-    PORTD = temp >> 8;  /* your_PORTD variable contains now bits b15-b8 */
-    __delay_ms(50);
+    PORTD = temp >> 8;  /* your_PORTD variable contains now bits b15-b8 */  
     W_CLK=1;
     __delay_ms(50);
-    W_CLK=0;
-    __delay_ms(50);
+    W_CLK=0;  
 
     //W4
     temp = tuning_freq & 0x000000FF;
-    PORTD = temp;    /* your_PORTD variable contains now bits b7-b0 */
-    __delay_ms(50);
+    PORTD = temp;    /* your_PORTD variable contains now bits b7-b0 */  
     W_CLK=1;
     __delay_ms(50);
-    W_CLK=0;
-    __delay_ms(50);
+    W_CLK=0;  
     FQ_UD=1;
     PORTD=0x00;
 }
 
 long FreqUp(float val)
 {
-	val = (val * pow(2,32)) / DDS_CLOCK;
+	val = val*34.35973837;
         return val;
 }
 
@@ -145,5 +133,5 @@ void main(){
    POn=1;
    AD9850_Init();
    AD9850_Reset();
-   AD9850_OscP(FreqUp(100000));
+   AD9850_OscP(FreqUp(100));
 }
