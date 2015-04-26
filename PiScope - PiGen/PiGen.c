@@ -153,8 +153,6 @@ void AD9850_OscP(float freq){
     FQ_UD=1;
     PORTD=0x00;
 }
-
-
 //Basic Default Display
 void defDisplay(){
     Lcd_Clear();
@@ -198,7 +196,11 @@ void mulp(){
 }
 
 void resetAD9850(){
-    AD9850_OscP(1000);
+    val=100;
+    AD9850_OscP(val);
+    sprintf(res,"%.2f",val);
+    Lcd_Set_Cursor(2, 6);
+    Lcd_Write_String(res);
 }
 
 void main(){
